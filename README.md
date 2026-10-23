@@ -1,33 +1,33 @@
-# BOSCH — BEA CAN Communication & Diagnostic
+# BOSCH — BEA CAN Communication & Diagnostics
 
-Project thực hành hệ thống nhúng với **STM32F405RGT6**, giao tiếp **CAN/UART** và công cụ chẩn đoán **Python/Tkinter**.
+An embedded systems practice project using the **STM32F405RGT6**, **CAN/UART** communication, and a **Python/Tkinter** diagnostic tool.
 
-## Thành phần
+## Project Structure
 
-| Đường dẫn | Nội dung |
+| Path | Description |
 | --- | --- |
-| `03_BEA_BasicConfiguredSourceCode/` | Firmware STM32, cấu hình STM32CubeIDE, HAL/CMSIS và linker scripts. |
-| `01_Diagnostic/BEA2026_Diag_Checker/` | Ứng dụng desktop gửi/nhận dữ liệu qua cổng serial và thực hiện các dịch vụ chẩn đoán. |
-| `01_Diagnostic/` | Tài liệu bài thực hành chẩn đoán và sơ đồ hệ thống. |
-| `02_Communication/` | Tài liệu bài thực hành giao tiếp CAN. |
-| `BEA_pratical_tool_Installation_guide.docx` | Tài liệu hướng dẫn cài đặt công cụ. |
-| `BEA_CAN2CAN_DEMO_TEN1HC_HUST.hex` | Firmware HEX có sẵn trong tài liệu gốc. |
+| `03_BEA_BasicConfiguredSourceCode/` | STM32 firmware, STM32CubeIDE configuration, HAL/CMSIS drivers, and linker scripts. |
+| `01_Diagnostic/BEA2026_Diag_Checker/` | Desktop application for sending and receiving serial data and running diagnostic services. |
+| `01_Diagnostic/` | Diagnostic practice documentation and the system topology diagram. |
+| `02_Communication/` | CAN communication practice documentation. |
+| `BEA_pratical_tool_Installation_guide.docx` | Tool installation guide. |
+| `BEA_CAN2CAN_DEMO_TEN1HC_HUST.hex` | Prebuilt HEX firmware included in the original project materials. |
 
-## Chức năng trong mã nguồn
+## Features Implemented in the Source Code
 
-- Giao tiếp CAN1/CAN2 và xử lý dữ liệu qua UART.
-- Kiểm tra dữ liệu CAN bằng counter/checksum.
-- Các dịch vụ chẩn đoán `0x22` (Read Data By Identifier), `0x27` (Security Access) và `0x2E` (Write Data By Identifier).
-- Đọc nhiệt độ, đọc CAN ID và xử lý yêu cầu thay đổi CAN ID.
-- Công cụ Python có giao diện chọn cổng COM, baud rate, dữ liệu dạng String/Hex và nhật ký TX/RX.
+- CAN1/CAN2 communication and UART data processing.
+- CAN data validation using counters and checksums.
+- Diagnostic services: `0x22` (Read Data By Identifier), `0x27` (Security Access), and `0x2E` (Write Data By Identifier).
+- Temperature readings, CAN ID readings, and CAN ID change requests.
+- A Python interface with COM port and baud rate selection, String/Hex data modes, and TX/RX logging.
 
-Đây là mô tả dựa trên mã nguồn; hoạt động thực tế cần kiểm tra với bo mạch và thiết bị CAN/serial tương ứng.
+This overview is based on the source code. Actual operation must be verified with the appropriate board and CAN/serial hardware.
 
-## Chạy công cụ chẩn đoán trên Windows
+## Running the Diagnostic Tool on Windows
 
-Yêu cầu: **Python 3.12**, có Tcl/Tk, và driver cho thiết bị USB-to-serial.
+Requirements: **Python 3.12** with Tcl/Tk support and the driver for your USB-to-serial device.
 
-Mở PowerShell tại thư mục gốc project:
+Open PowerShell in the project root directory:
 
 ```powershell
 cd 01_Diagnostic/BEA2026_Diag_Checker
@@ -36,30 +36,30 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe BEA_DiagChecker.py
 ```
 
-Kết nối thiết bị, chọn cổng COM và baud rate phù hợp. Firmware hiện cấu hình UART **115200 baud, 8N1**. Xem thêm [README của công cụ](01_Diagnostic/BEA2026_Diag_Checker/README.md); các đường dẫn ổ đĩa tuyệt đối trong tài liệu đó là ví dụ của môi trường ban đầu.
+Connect the device and select the correct COM port and baud rate. The firmware currently configures UART at **115200 baud, 8N1**. See the [diagnostic tool README](01_Diagnostic/BEA2026_Diag_Checker/README.md) for more details; absolute drive paths in that document are examples from the original development environment.
 
-### Chạy kiểm thử Python
+### Running the Python Tests
 
-Tại `01_Diagnostic/BEA2026_Diag_Checker/`:
+From `01_Diagnostic/BEA2026_Diag_Checker/`:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install pytest
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Các kiểm thử có sẵn dùng kết nối serial giả lập, không cần bo mạch.
+The existing tests use simulated serial connections and do not require a physical board.
 
-## Mở và build firmware
+## Opening and Building the Firmware
 
-1. Cài STM32CubeIDE và công cụ/driver cần thiết theo tài liệu đi kèm.
-2. Import project có sẵn từ thư mục `03_BEA_BasicConfiguredSourceCode/`.
-3. Kiểm tra target **STM32F405RGT6**, cấu hình build và kết nối phần cứng.
-4. Build project, sau đó nạp firmware bằng công cụ phù hợp với bo mạch.
+1. Install STM32CubeIDE and the required tools/drivers according to the included documentation.
+2. Import the existing project from `03_BEA_BasicConfiguredSourceCode/`.
+3. Check the **STM32F405RGT6** target, build configuration, and hardware connections.
+4. Build the project, then flash the firmware using a tool compatible with the board.
 
-File `.ioc` được giữ nguyên từ project gốc. Kiểm tra cấu hình so với mã nguồn hiện tại trước khi dùng tính năng sinh lại mã. File HEX đi kèm chưa được xác minh là kết quả build của phiên bản mã nguồn hiện tại.
+The `.ioc` file is preserved from the original project. Compare its configuration with the current source code before regenerating code. The included HEX file has not been verified as a build of the current source version.
 
-## Tệp và giấy phép
+## Files and Licensing
 
-- `.gitignore` loại trừ build output, môi trường Python, cache, log và tệp tạm Office.
-- Tài liệu, firmware HEX và các tệp cấu hình STM32CubeIDE được giữ lại.
-- Các thông báo bản quyền và giấy phép của STMicroelectronics/Arm trong `Drivers/` được giữ nguyên. Kho này không bổ sung giấy phép chung cho toàn bộ nội dung.
+- `.gitignore` excludes build output, Python environments, caches, logs, and temporary Office files.
+- Documentation, HEX firmware, and STM32CubeIDE configuration files are retained.
+- Existing STMicroelectronics/Arm copyright notices and licenses in `Drivers/` are preserved. This repository does not add a license covering all of its contents.
